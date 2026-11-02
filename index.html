@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rythme</title>
+<style>
+:root{color-scheme:dark;--bg:#0e0f12;--s1:#16181d;--s2:#1e2128;--bd:#2a2e37;--tx:#e8eaee;--mu:#8b92a1;--ac:#8b7cf6;--ok:#4ade80;--bad:#f87171;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:10}
+header{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5;border-bottom:1px solid var(--bd)}
+.w{max-width:760px;margin:0 auto;padding:0 16px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0}
+.logo{font-weight:700;font-size:20px;letter-spacing:.3px}.logo b{color:var(--ac)}
+nav{display:flex;gap:4px;background:var(--s1);border-radius:12px;padding:4px}
+nav button{background:none;border:0;color:var(--mu);padding:8px 14px;border-radius:9px;cursor:pointer;font:inherit;transition:.2s}
+nav button.on{background:var(--s2);color:var(--tx)}
+main{padding:20px 0 60px;animation:f .3s}
+@keyframes f{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+h1{font-size:22px;margin:0;text-transform:capitalize}h2{font-size:16px;margin:28px 0 12px}
+.card{background:var(--s1);border:1px solid var(--bd);border-radius:14px;padding:16px}
+.row{display:flex;align-items:center;gap:8px}.between{justify-content:space-between}.wrap{flex-wrap:wrap}
+button{font:inherit;color:inherit}
+.ib,.btn{background:var(--s2);border:1px solid var(--bd);border-radius:10px;padding:8px 12px;cursor:pointer;transition:.2s}
+.ib:hover,.btn:hover{border-color:var(--ac)}
+.btn.p{background:var(--ac);border-color:var(--ac);color:#fff}.btn.d{color:var(--bad)}
+.mu{color:var(--mu)}.sm{font-size:13px}
+.bar{height:10px;background:var(--s2);border-radius:9px;overflow:hidden;margin:10px 0}
+.bar i{display:block;height:100%;background:var(--ac);border-radius:9px;transition:width .4s}
+.task{display:flex;align-items:center;gap:12px;padding:12px 14px;margin-top:8px;background:var(--s1);border:1px solid var(--bd);border-radius:12px}
+.task .n{flex:1;min-width:0}.task.dn .nm{text-decoration:line-through;color:var(--mu)}
+.chk{width:28px;height:28px;border-radius:8px;border:2px solid var(--bd);background:none;cursor:pointer;color:transparent;font-size:16px;transition:.2s;flex:none}
+.chk.on{background:var(--ac);border-color:var(--ac);color:#fff}
+input,select,textarea{background:var(--s2);border:1px solid var(--bd);border-radius:10px;color:var(--tx);font:inherit;padding:9px 11px;width:100%}
+textarea{min-height:110px;font:12px monospace}
+label{display:block;margin-top:12px;color:var(--mu);font-size:13px}label input,label select{margin-top:4px;color:var(--tx)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.chip{display:flex;align-items:center;gap:5px;margin:0;padding:6px 10px;background:var(--s2);border:1px solid var(--bd);border-radius:20px;color:var(--tx);cursor:pointer}
+.chip input{width:auto}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.kpi b{display:block;font-size:26px}.kpi span{color:var(--mu);font-size:13px}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.cal div{aspect-ratio:1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;background:var(--s2);cursor:pointer;border:1px solid transparent}
+.cal .h{background:none;aspect-ratio:auto;color:var(--mu);cursor:default;font-size:12px}
+.cal .e{background:none;cursor:default}.cal .tdy{border-color:var(--tx)}
+.lg{display:flex;gap:6px;align-items:center;margin-top:10px;font-size:12px;color:var(--mu)}.lg i{width:16px;height:12px;border-radius:3px}
+svg{width:100%;height:auto;display:block}
+.hb{display:flex;align-items:center;gap:10px;margin-top:10px}.hb .nm{width:40%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.hb .bar{flex:1;margin:0}
+.up{color:var(--ok)}.dw{color:var(--bad)}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--s2);border:1px solid var(--ac);padding:10px 16px;border-radius:10px;opacity:0;pointer-events:none;transition:.3s;z-index:20}
+#toast.on{opacity:1}
+@media(max-width:520px){.logo{font-size:17px}nav button{padding:8px 9px;font-size:14px}}
+#account{padding:14px 16px;margin-top:14px;background:var(--s1);border:1px solid var(--bd);border-radius:14px}
+#account .auth-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+#account input{min-width:0}
+#account .auth-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+@media(max-width:520px){#account .auth-grid{grid-template-columns:1fr}}
+</style></head><body>
+<header><div class="w"><div class="top"><div class="logo">Ryth<b>me</b><div id="sync" style="font-weight:400;font-size:11px;color:var(--mu)"></div></div>
+<nav><button data-a="nav" data-v="today">Aujourd’hui</button><button data-a="nav" data-v="stats">Statistiques</button><button data-a="nav" data-v="tasks">Mes tâches</button></nav></div></div></header>
+<div class="w"><div id="account"></div><main id="main"></main></div><div id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const $=s=>document.querySelector(s),K="rythme.v1",DJ=["Lun","Mar","Mer","Jeu","Ven","Sam","Dim"];
+const pad=n=>String(n).padStart(2,"0"),key=d=>d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+const par=k=>{const[a,b,c]=k.split("-").map(Number);return new Date(a,b-1,c)};
+const add=(d,n)=>new Date(d.getFullYear(),d.getMonth(),d.getDate()+n);
+const dd=(a,b)=>Math.round((Date.UTC(a.getFullYear(),a.getMonth(),a.getDate())-Date.UTC(b.getFullYear(),b.getMonth(),b.getDate()))/864e5);
+const dow=d=>(d.getDay()+6)%7,wk=d=>add(d,-dow(d));
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const T=new Date(new Date().getFullYear(),new Date().getMonth(),new Date().getDate());
+let S,view="today",cur=T,sm=new Date(T.getFullYear(),T.getMonth(),1),editing=null,delId=null;
+function load(){try{const r=localStorage.getItem(CK());if(r){const o=JSON.parse(r);if(o&&Array.isArray(o.tasks)&&o.logs)return o}}catch(e){}return null}
+let UID=null,user=null,sb=null,cloudReady=false,syncTimer=null;
+const CK=()=>K+(UID?"."+UID:"");
+function save(sync=true){
+ try{localStorage.setItem(CK(),JSON.stringify(S))}catch(e){}
+ if(sync&&cloudReady)queueCloudSave();
+}
+function setSync(m,bad){const e=$("#sync");if(e){e.textContent=m;e.style.color=bad?"var(--bad)":""}}
+function renderAccount(){
+ const el=$("#account");if(!el)return;
+ if(!sb){el.innerHTML='<div class="mu sm">Connexion cloud indisponible. Vérifiez votre connexion internet.</div>';return}
+ if(user){
+  el.innerHTML=`<div class="row between wrap"><div><b>Compte connecté</b><div class="mu sm">${esc(user.email||"Utilisateur")}</div></div><button class="btn" data-a="logout">Se déconnecter</button></div>`;
+ }else{
+  el.innerHTML=`<b>Synchroniser mes données</b>
+   <p class="mu sm" style="margin:4px 0 10px">Créez un compte ou connectez-vous pour retrouver vos tâches sur tous vos appareils.</p>
+   <div class="auth-grid"><input id="authEmail" type="email" autocomplete="email" placeholder="Adresse e-mail"><input id="authPassword" type="password" autocomplete="current-password" placeholder="Mot de passe (6 caractères minimum)"></div>
+   <div class="auth-actions"><button class="btn p" data-a="login">Se connecter</button><button class="btn" data-a="signup">Créer un compte</button></div>`;
+ }
+}
+async function syncCloudNow(){
+ if(!cloudReady||!user)return;
+ setSync("Synchronisation…");
+ const {error}=await sb.from("rythme_data").upsert(
+  {user_id:UID,state:S,updated_at:new Date().toISOString()},
+  {onConflict:"user_id"}
+ );
+ if(error){setSync("Échec de synchronisation",1);console.error(error);return}
+ setSync("● Synchronisé");
+}
+function queueCloudSave(){
+ clearTimeout(syncTimer);
+ setSync("Modifications en attente…");
+ syncTimer=setTimeout(()=>syncCloudNow(),500);
+}
+const pushTasks=()=>queueCloudSave();
+const pushDay=k=>queueCloudSave();
+const pushAll=old=>queueCloudSave();
+async function loadCloudState(){
+ if(!user)return;
+ UID=user.id;cloudReady=false;setSync("Chargement du compte…");
+ const {data,error}=await sb.from("rythme_data").select("state").eq("user_id",UID).maybeSingle();
+ if(error){setSync("Erreur de chargement cloud",1);console.error(error);return}
+ if(data&&data.state&&Array.isArray(data.state.tasks)&&data.state.logs){
+  S=data.state;save(false);render();
+  setSync("● Synchronisé");
+ }else{
+  // Première connexion : transfert des données déjà présentes dans ce navigateur.
+  save(false);cloudReady=true;await syncCloudNow();return;
+ }
+ cloudReady=true;
+}
+async function initCloud(){
+ try{
+  if(!window.supabase||!window.supabase.createClient)throw new Error("La bibliothèque Supabase n’a pas chargé.");
+  sb=window.supabase.createClient(
+   "https://bwmklpenqwblctgfkror.supabase.co",
+   "sb_publishable_1XLNqubL3EhkR8ENXRgnEA_ARL2KINs"
+  );
+  renderAccount();
+  const {data:{session}}=await sb.auth.getSession();
+  user=session?.user||null;
+  renderAccount();
+  if(user)await loadCloudState();else setSync("● Mode local · connectez-vous pour synchroniser");
+  sb.auth.onAuthStateChange(async(_event,session)=>{
+   const nextUser=session?.user||null;
+   const changed=(nextUser?.id||null)!==(user?.id||null);
+   user=nextUser;renderAccount();
+   if(changed){
+    cloudReady=false;UID=user?user.id:null;
+    if(user)await loadCloudState();
+    else{S=load();if(!S)S={tasks:[],logs:{}};save(false);render();setSync("● Mode local · non synchronisé");}
+   }
+  });
+ }catch(e){console.error(e);setSync("Cloud indisponible · mode local",1);renderAccount()}
+}
+async function authAction(action){
+ const email=$("#authEmail")?.value.trim(),password=$("#authPassword")?.value||"";
+ if(!email||!password){toast("Saisissez votre e-mail et votre mot de passe.");return}
+ if(action==="signup"&&password.length<6){toast("Le mot de passe doit contenir au moins 6 caractères.");return}
+ setSync("Connexion…");
+ const result=action==="signup"
+  ?await sb.auth.signUp({email,password})
+  :await sb.auth.signInWithPassword({email,password});
+ if(result.error){setSync("Erreur de connexion",1);toast(result.error.message);return}
+ if(action==="signup"&&!result.data.session){
+  toast("Compte créé. Vérifiez votre boîte mail pour confirmer l’adresse.");
+  setSync("Confirmation e-mail nécessaire");return;
+ }
+ toast(action==="signup"?"Compte créé.":"Connexion réussie.");
+}
+function refresh(){const a=document.activeElement;if(editing||(a&&/INPUT|TEXTAREA|SELECT/.test(a.tagName)))dirty=true;else render()}
+function applySnap(snap){
+ const td=snap.docs.find(d=>d.id=="tasks");
+ if(!td){if(first){if(!S)seed();pushAll()}}
+ else{const logs={};snap.docs.forEach(d=>{if(d.id.startsWith("d-")){const i=d.data().ids;if(Array.isArray(i)&&i.length)logs[d.id.slice(2)]=i.slice()}});
+  S={tasks:JSON.parse(JSON.stringify(td.data().list||[])),logs};save()}
+ first=false;setSync("● Synchronisé");refresh()}
+async function initCloud(){
+ try{if(!window.claude||!claude.use)throw 0;
+  const u=await claude.use("user"),db=await claude.use("db");UID=u?await u.id():null;
+  if(!db||!UID)throw 0;
+  col=db.collection("data/users/"+UID);cloud=true;setSync("Connexion…");
+  col.onSnapshot(applySnap,()=>setSync("Synchro indisponible (mode local)",1))
+ }catch(e){setSync("Mode local · non synchronisé (connexion requise)",1)}}
+function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove("on"),2200)}
+const done=(t,k)=>(S.logs[k]||[]).includes(t.id);
+const weekCnt=(t,d)=>{let c=0;for(let i=0;i<7;i++)if(done(t,key(add(wk(d),i))))c++;return c};
+function sched(t,d,sf){
+ if(d<par(t.created))return false;const f=t.f,k=key(d);
+ if(f.type=="daily")return true;
+ if(f.type=="days")return f.days.includes(dow(d));
+ if(f.type=="every")return dd(d,par(t.created))%f.n==0;
+ if(sf)return done(t,k);
+ if(done(t,k))return true;let c=0;for(let w=wk(d);w<d;w=add(w,1))if(done(t,key(w)))c++;return c<f.n}
+function st(d,sf){const ts=S.tasks.filter(t=>sched(t,d,sf)),dn=ts.filter(t=>done(t,key(d))).length;return{tot:ts.length,dn,p:ts.length?dn/ts.length:0}}
+function fl(f){return f.type=="daily"?"Tous les jours":f.type=="weekly"?f.n+" fois par semaine":f.type=="every"?"Tous les "+f.n+" jours":f.days.map(i=>DJ[i]).join(", ")}
+function seed(){
+ const c=key(add(T,-45)),mk=(id,name,f)=>({id,name,f,created:c});
+ S={tasks:[mk("a","Boire 2 L d’eau",{type:"daily"}),mk("b","Méditation 10 min",{type:"daily"}),mk("c","Sport",{type:"weekly",n:3}),mk("d","Lecture",{type:"days",days:[0,2,4]}),mk("e","Appeler un proche",{type:"every",n:2})],logs:{}};
+ let r=7;const rnd=()=>(r=(r*1103515245+12345)%2147483648)/2147483648,pr={a:.85,b:.65,c:.6,d:.7,e:.55};
+ for(let d=add(T,-45);d<T;d=add(d,1))S.tasks.forEach(t=>{if(sched(t,d,false)&&rnd()<pr[t.id]){const k=key(d);(S.logs[k]=S.logs[k]||[]).push(t.id)}});
+ save()}
+function mstats(m){const y=m.getFullYear(),mo=m.getMonth(),n=new Date(y,mo+1,0).getDate();let days=[],sum=0,c=0,tot=0,perf=0,act=0;
+ for(let i=1;i<=n;i++){const d=new Date(y,mo,i),s=d>T?null:st(d,true);days.push({d,s});if(s&&s.tot){sum+=s.p;c++;tot+=s.dn;if(s.p==1)perf++;if(s.dn)act++}}
+ return{days,avg:c?sum/c:0,total:tot,perf,reg:c?act/c:0,c}}
+function hstats(m){const first=new Date(m.getFullYear(),m.getMonth(),1),last=new Date(m.getFullYear(),m.getMonth()+1,0);
+ return S.tasks.map(t=>{let a=0,b=0;
+  if(t.f.type=="weekly"){let w=wk(first);if(w<first)w=add(w,7);for(;w<=last&&w<=T;w=add(w,7)){if(add(w,6)<par(t.created))continue;a+=Math.min(weekCnt(t,w),t.f.n);b+=t.f.n}}
+  else for(let d=first;d<=last&&d<=T;d=add(d,1))if(sched(t,d,true)){b++;if(done(t,key(d)))a++}
+  return{t,a,b,r:b?a/b:null}}).sort((x,y)=>(y.r??-1)-(x.r??-1))}
+const pc=x=>Math.round(x*100)+" %";
+function vToday(){
+ const k=key(cur),ts=S.tasks.filter(t=>sched(t,cur,false)),dn=ts.filter(t=>done(t,k)).length,tot=ts.length,p=tot?Math.round(dn/tot*100):0;
+ const lbl=cur.toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+ return `<div class="row between wrap"><div><h1>${lbl}</h1><div class="mu sm">${k==key(T)?"Aujourd’hui":dd(cur,T)<0?"Jour passé":"Jour à venir"}</div></div>
+ <div class="row"><button class="ib" data-a="day" data-n="-1" aria-label="Jour précédent">‹</button><button class="ib" data-a="day" data-n="0">Aujourd’hui</button><button class="ib" data-a="day" data-n="1" aria-label="Jour suivant">›</button></div></div>
+ <div class="card" style="margin-top:16px"><div class="row between"><b>${p} %</b><span class="mu sm">${dn} terminée${dn>1?"s":""} · ${tot-dn} restante${tot-dn>1?"s":""}</span></div><div class="bar"><i style="width:${p}%"></i></div></div>
+ ${ts.length?ts.map(t=>{const d=done(t,k);return `<div class="task ${d?"dn":""}"><button class="chk ${d?"on":""}" role="checkbox" aria-checked="${d}" data-a="tog" data-id="${t.id}">✓</button><div class="n"><div class="nm">${esc(t.name)}</div><div class="mu sm">${t.f.type=="weekly"?weekCnt(t,cur)+"/"+t.f.n+" cette semaine":fl(t.f)}</div></div></div>`}).join(""):`<p class="mu">Aucune tâche prévue ce jour-là. Ajoutez-en dans l’onglet « Mes tâches ».</p>`}
+ <label style="margin-top:20px">Aller à une date<input type="date" id="dp" value="${k}"></label>`}
+function bars(arr,h,lab){const w=600,bw=w/arr.length;return `<svg viewBox="0 0 ${w} ${h+22}">${[0,.5,1].map(v=>`<line x1="0" x2="${w}" y1="${h-v*h}" y2="${h-v*h}" stroke="#2a2e37"/>`).join("")}${arr.map((v,i)=>{const x=i*bw;return v==null?"":`<rect x="${x+bw*.15}" y="${h-v*h}" width="${bw*.7}" height="${Math.max(v*h,1)}" rx="3" fill="#8b7cf6"/>`}).join("")}${arr.map((v,i)=>lab(i)?`<text x="${i*bw+bw/2}" y="${h+15}" text-anchor="middle" fill="#8b92a1" font-size="11">${lab(i)}</text>`:"").join("")}</svg>`}
+function vStats(){
+ const M=mstats(sm),P=mstats(new Date(sm.getFullYear(),sm.getMonth()-1,1)),H=hstats(sm);
+ const mn=sm.toLocaleDateString("fr-FR",{month:"long",year:"numeric"}),pn=new Date(sm.getFullYear(),sm.getMonth()-1,1).toLocaleDateString("fr-FR",{month:"long"});
+ const lead=dow(sm);let cal=DJ.map(d=>`<div class="h">${d}</div>`).join("")+'<div class="e"></div>'.repeat(lead);
+ M.days.forEach(({d,s})=>{let bg="";if(s&&s.tot)bg=s.p==0?"rgba(248,113,113,.2)":`rgba(139,124,246,${.2+.8*s.p})`;
+  cal+=`<div data-a="goto" data-k="${key(d)}" class="${key(d)==key(T)?"tdy":""}" style="${bg?"background:"+bg:""};${d>T?"opacity:.5":""}" title="${s&&s.tot?s.dn+"/"+s.tot:""}">${d.getDate()}</div>`});
+ const ms=[];for(let i=5;i>=0;i--)ms.push(new Date(sm.getFullYear(),sm.getMonth()-i,1));const MS=ms.map(mstats);
+ const dl=(a,b,u)=>{const x=a-b;return `<span class="${x>=0?"up":"dw"}">${x>=0?"▲":"▼"} ${u?Math.abs(Math.round(x*100))+" pts":Math.abs(x)}</span>`};
+ return `<div class="row between"><button class="ib" data-a="mo" data-n="-1">‹</button><h1>${mn}</h1><button class="ib" data-a="mo" data-n="1">›</button></div>
+ <div class="grid" style="margin-top:16px"><div class="card kpi"><b>${pc(M.avg)}</b><span>Réussite moyenne</span></div><div class="card kpi"><b>${M.total}</b><span>Tâches accomplies</span></div><div class="card kpi"><b>${M.perf}</b><span>Jours parfaits</span></div><div class="card kpi"><b>${pc(M.reg)}</b><span>Régularité (jours actifs)</span></div></div>
+ <h2>Calendrier</h2><div class="card"><div class="cal">${cal}</div><div class="lg"><i style="background:rgba(248,113,113,.2)"></i>0 %<i style="background:rgba(139,124,246,.4)"></i>partiel<i style="background:rgba(139,124,246,1)"></i>100 %</div></div>
+ <h2>Taux de réussite quotidien</h2><div class="card">${bars(M.days.map(x=>x.s&&x.s.tot?x.s.p:null),140,i=>(i+1)%5==0||i==0?i+1:"")}</div>
+ <h2>Comparaison avec ${pn}</h2><div class="card"><div class="grid"><div><div class="mu sm">Réussite moyenne</div><b>${pc(M.avg)}</b> ${dl(M.avg,P.avg,1)}<div class="mu sm">avant : ${pc(P.avg)}</div></div><div><div class="mu sm">Tâches réalisées</div><b>${M.total}</b> ${dl(M.total,P.total)}<div class="mu sm">avant : ${P.total}</div></div></div>
+ <div class="mu sm" style="margin-top:14px">Réussite sur 6 mois</div>${bars(MS.map(x=>x.c?x.avg:null),100,i=>ms[i].toLocaleDateString("fr-FR",{month:"short"})+" ("+MS[i].total+")")}</div>
+ <h2>Par habitude</h2><div class="card">${H.length?H.map(h=>`<div class="hb"><span class="nm">${esc(h.t.name)}</span><div class="bar"><i style="width:${h.r==null?0:Math.round(h.r*100)}%"></i></div><span class="sm mu" style="width:80px;text-align:right">${h.r==null?"–":pc(h.r)+" ("+h.a+"/"+h.b+")"}</span></div>`).join(""):'<span class="mu">Aucune habitude.</span>'}</div>`}
+function ff(type,f){
+ if(type=="weekly")return `<label>Objectif par semaine<input type="number" id="fn" min="1" max="7" value="${f.n||3}"></label>`;
+ if(type=="every")return `<label>Tous les X jours<input type="number" id="fn" min="2" max="60" value="${f.n||2}"></label>`;
+ if(type=="days")return `<label>Jours</label><div class="chips">${DJ.map((d,i)=>`<label class="chip"><input type="checkbox" class="fd" value="${i}" ${(f.days||[]).includes(i)?"checked":""}>${d}</label>`).join("")}</div>`;return ""}
+function vTasks(){
+ let form="";
+ if(editing){const t=editing=="new"?{name:"",f:{type:"daily"}}:S.tasks.find(x=>x.id==editing);
+  form=`<div class="card" style="margin-top:16px"><b>${editing=="new"?"Nouvelle tâche":"Modifier la tâche"}</b><label>Nom<input id="fname" maxlength="60" value="${esc(t.name)}" placeholder="Ex. : Lire 20 pages"></label>
+  <label>Fréquence<select id="ft">${[["daily","Tous les jours"],["weekly","Plusieurs fois par semaine"],["every","Tous les X jours"],["days","Certains jours précis"]].map(o=>`<option value="${o[0]}" ${t.f.type==o[0]?"selected":""}>${o[1]}</option>`).join("")}</select></label>
+  <div id="ffx">${ff(t.f.type,t.f)}</div><div class="row" style="margin-top:16px"><button class="btn p" data-a="saveT">Enregistrer</button><button class="btn" data-a="cancel">Annuler</button></div></div>`}
+ return `<div class="row between"><h1>Mes tâches</h1><button class="btn p" data-a="new">+ Ajouter</button></div>${form}
+ ${S.tasks.length?S.tasks.map(t=>`<div class="task"><div class="n"><div class="nm">${esc(t.name)}</div><div class="mu sm">${fl(t.f)}</div></div><button class="btn" data-a="edit" data-id="${t.id}">Modifier</button><button class="btn d" data-a="del" data-id="${t.id}">${delId==t.id?"Confirmer ?":"Supprimer"}</button></div>`).join(""):'<p class="mu">Aucune tâche. Cliquez sur « Ajouter » pour commencer.</p>'}
+ <h2>Sauvegarde des données</h2><div class="card"><p class="mu sm" style="margin-top:0">Les données sont enregistrées automatiquement dans ce navigateur. Copiez l’export pour le conserver, ou collez une sauvegarde pour la restaurer.</p><textarea id="io" spellcheck="false" placeholder="Collez ici une sauvegarde JSON…"></textarea>
+ <div class="row wrap" style="margin-top:10px"><button class="btn" data-a="exp">Exporter</button><button class="btn" data-a="copy">Copier</button><button class="btn p" data-a="imp">Importer</button><label class="btn" style="margin:0;color:var(--tx)">Fichier…<input type="file" id="fi" accept=".json,application/json" hidden></label></div></div>`}
+function render(){document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on",b.dataset.v==view));const m=$("#main");m.innerHTML=view=="today"?vToday():view=="stats"?vStats():vTasks();m.style.animation="none";void m.offsetWidth;m.style.animation=""}
+function saveTask(){
+ const name=$("#fname").value.trim(),type=$("#ft").value;if(!name)return toast("Donnez un nom à la tâche.");
+ let f={type};
+ if(type=="weekly"||type=="every"){f.n=Math.max(type=="every"?2:1,Math.min(type=="weekly"?7:60,parseInt($("#fn").value)||0));if(!parseInt($("#fn").value))return toast("Indiquez un nombre valide.")}
+ if(type=="days"){f.days=[...document.querySelectorAll(".fd:checked")].map(x=>+x.value);if(!f.days.length)return toast("Choisissez au moins un jour.")}
+ if(editing=="new")S.tasks.push({id:"t"+Date.now(),name,f,created:key(T)});
+ else{const t=S.tasks.find(x=>x.id==editing);t.name=name;t.f=f}
+ save();pushTasks();editing=null;render();toast("Tâche enregistrée.")}
+function doImport(txt){
+ try{const o=JSON.parse(txt);if(!o||!Array.isArray(o.tasks)||typeof o.logs!="object"||o.logs===null)throw 0;
+  if(!o.tasks.every(t=>t&&t.id&&t.name&&t.f&&t.f.type&&t.created))throw 0;const old=S.logs;S={tasks:o.tasks,logs:o.logs};save();pushAll(old);editing=null;render();toast("Données importées.")}
+ catch(e){toast("Fichier invalide : import annulé.")}}
+document.addEventListener("click",e=>{
+ const b=e.target.closest("[data-a]");if(!b)return;const a=b.dataset.a,id=b.dataset.id;
+ if(a=="nav"){view=b.dataset.v;editing=null;delId=null;render()}
+ else if(a=="login"||a=="signup"){authAction(a)}
+ else if(a=="logout"){sb.auth.signOut().then(({error})=>{if(error)toast(error.message);else{toast("Déconnexion effectuée.");cloudReady=false;UID=null;setSync("● Mode local · non synchronisé")}})}
+ else if(a=="day"){cur=+b.dataset.n==0?T:add(cur,+b.dataset.n);render()}
+ else if(a=="tog"){const k=key(cur),l=S.logs[k]=S.logs[k]||[],i=l.indexOf(id);i<0?l.push(id):l.splice(i,1);if(!l.length)delete S.logs[k];save();pushDay(k);render()}
+ else if(a=="mo"){sm=new Date(sm.getFullYear(),sm.getMonth()+ +b.dataset.n,1);render()}
+ else if(a=="goto"){cur=par(b.dataset.k);view="today";render();scrollTo(0,0)}
+ else if(a=="new"){editing="new";render()}
+ else if(a=="edit"){editing=id;render()}
+ else if(a=="cancel"){editing=null;render()}
+ else if(a=="saveT")saveTask();
+ else if(a=="del"){if(delId==id){S.tasks=S.tasks.filter(t=>t.id!=id);delId=null;save();pushTasks();render();toast("Tâche supprimée.")}else{delId=id;render()}}
+ else if(a=="exp"){$("#io").value=JSON.stringify(S,null,1);toast("Export prêt : copiez-le.")}
+ else if(a=="copy"){const t=$("#io");if(!t.value)t.value=JSON.stringify(S,null,1);t.select();let ok=false;try{ok=document.execCommand("copy")}catch(x){}
+  if(navigator.clipboard)navigator.clipboard.writeText(t.value).then(()=>toast("Copié dans le presse-papiers."),()=>toast(ok?"Copié.":"Sélectionné : copiez avec Ctrl+C."));else toast(ok?"Copié.":"Sélectionné : copiez avec Ctrl+C.")}
+ else if(a=="imp"){const v=$("#io").value.trim();v?doImport(v):toast("Collez d’abord une sauvegarde.")}
+});
+document.addEventListener("change",e=>{
+ if(e.target.id=="ft")$("#ffx").innerHTML=ff(e.target.value,{});
+ else if(e.target.id=="dp"&&e.target.value){cur=par(e.target.value);render()}
+ else if(e.target.id=="fi"){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{$("#io").value=r.result;doImport(r.result)};r.readAsText(f)}
+});
+S=load();if(!S){S={tasks:[],logs:{}};save(false)}render();initCloud();
+</script></body></html>
